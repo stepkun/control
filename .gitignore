@@ -1,2 +1,7 @@
 # Backup files from FreeCAD
 *.FCStd?
+*.gcode
+*.3mf
+*.pdf
+.ideas
+
