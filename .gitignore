@@ -1,7 +1,15 @@
-# Backup files from FreeCAD
-*.FCStd?
-*.gcode
-*.3mf
-*.pdf
+# my personal stuff
 .ideas
 
+# Backup files from FreeCAD
+*.FCStd?
+
+# 3d-printing
+*.gcode
+*.3mf
+
+# pdf documents
+*.pdf
+
+# Python stuff
+__pycache__
