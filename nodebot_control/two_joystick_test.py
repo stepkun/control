@@ -54,3 +54,6 @@ def main(args=None):
         print('| {0:>6} | {1:>6} | {2:>6} | {3:>6} |'.format(*values1), ' {0:>6} | {1:>6} | {2:>6} | {3:>6} |'.format(*values2))
         # Pause a short time, not less than 0.2 seconds
         time.sleep(0.2)
+
+if __name__ == '__main__':
+    main()
