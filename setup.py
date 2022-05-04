@@ -29,7 +29,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'test_joysticks = two_joysticks_test:main',
+            'test_joysticks = two_joystick_test:main',
+            'app = main:main',
         ],
     },
 )
