@@ -1,4 +1,5 @@
 import os
+from glob import glob
 from setuptools import setup
 
 package_name = 'nodebot_control'
@@ -29,8 +30,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'test_joysticks = two_joystick_test:main',
-            'app = main:main',
+            'test_joysticks = nodebot_control.two_joystick_test:main',
         ],
     },
 )
