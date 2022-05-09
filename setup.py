@@ -31,6 +31,7 @@ setup(
     entry_points={
         'console_scripts': [
             'test_joysticks = nodebot_control.two_joystick_test:main',
+            'app = nodebot_control.app:main',
         ],
     },
 )
