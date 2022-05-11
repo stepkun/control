@@ -24,7 +24,7 @@ class ControlsWorker(QRunnable):
         #print("control set started")
         while self.do_run:
             # query all devices in that list
-            for v in self.controls.values():
+            for v in self.controls.copy().values():
                 v.read()
             
         #print("control set ended")

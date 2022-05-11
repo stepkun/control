@@ -1,6 +1,6 @@
 
 # Import the ADS1x15 module.
-#import Adafruit_ADS1x15 as ADC
+import Adafruit_ADS1x15 as ADC
 import time
 import random
 
@@ -35,24 +35,24 @@ class Joystick:
         self.addr = address
         self.signals = JoystickSignals()
         self.values = [0]*4
-        self.center = [825]*4
-        self.lower_deadzone= [800]*4
-        self.upper_deadzone = [850]*4
+        self.center = [828]*4
+        self.lower_deadzone= [828]*4
+        self.upper_deadzone = [828]*4
         self.min_change = 1
 
         # Use ADC.ADS1115 for the 16 bit version
-#        self.adc = ADC.ADS1015(address=self.addr, busnum=BUS)
+        self.adc = ADC.ADS1015(address=self.addr, busnum=BUS)
 
     def read(self):
         new_values = [0]*4
         values_changed = False
         for i in range(4):
-#            new_values[i] = self.adc.read_adc(i, gain=GAIN)
-            new_values[i] = random.randint(0, 1650)
+            new_values[i] = self.adc.read_adc(i, gain=GAIN)
+            #new_values[i] = random.randint(0, 1650)
             # respect to deadzone
             if new_values[i] > self.lower_deadzone[i] and new_values[i] < self.upper_deadzone[i]:
                 new_values[i] = self.center[i]
-            time.sleep(0.01)
+            #time.sleep(0.01)
 
         #print('I2C: 0x{0:02x}'.format(self.addr), '| {0:>6} | {1:>6} | {2:>6} | {3:>6} |'.format(*new_values))
         # only emit if values changed with respect to min_change
