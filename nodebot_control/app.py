@@ -8,25 +8,41 @@ from .devices.joystick import Joystick
 from .ros.publisher import RosPublisher
 
 def main(args=None):
-    # setup application environment
-    app = QApplication([])
+    try:
+        # setup application environment
+        app = QApplication([])
 
-    # central data store
-    data = DataStore()
+        # central data store
+        data = DataStore()
 
-    # setup application components
-    controls = ControlSet(data)
-    controls.add(Joystick('leftStick', 0x48))
-    controls.add(Joystick('rightStick', 0x49))
+        # setup application components, running in a separate thread
+        controls = ControlSet(data)
+        controls.add(Joystick('leftStick', 0x48))
+        controls.add(Joystick('rightStick', 0x49))
 
-    publisher = RosPublisher(data)
+        # setup ros publisher running in a separate thread
+        publisher = RosPublisher(data)
 
-    #setup main window
-    window = MainWindow(controls, publisher)
-    window.show()
+        #setup main window
+        window = MainWindow(controls, publisher)
+        window.show()
 
-    # run application event loop
-    app.exec_()
+        # run application event loop
+        app.exec_()
+
+    # final exeption handler to ensure proper shutdown of threads
+    except(Exception) as e:
+        print(e)
+        try:
+            controls.stop()
+        except:
+            pass
+        try:
+            publisher.stop()
+        except:
+            pass
+        exit()
+
 
 if __name__ == '__main__':
     main()
