@@ -1,11 +1,12 @@
+#!/usr/bin/env python3
 
 from PySide2.QtWidgets import QApplication
 
-from .ui.main_window import MainWindow
-from .models.data_store import DataStore
-from .devices.control_set import ControlSet
-from .devices.joystick import Joystick
-from .ros.publisher import RosPublisher
+from nodebot_control.ui.main_window import MainWindow
+from nodebot_control.models.data_store import DataStore
+from nodebot_control.devices.control_set import ControlSet
+from nodebot_control.devices.joystick import Joystick
+from nodebot_control.ros.publisher import RosPublisher
 
 def main(args=None):
     try:

@@ -6,7 +6,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
+find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -22,6 +25,26 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_python_install_package(${PROJECT_NAME})
+# Include C++ "include" directory
+#include_directories(include)
+
+# Create C++ executable
+#add_executable(control_cpp src/control.cpp)
+#ament_target_dependencies(control_cpp rclcpp geometry_msgs std_msgs)
+
+# Install C++ executables
+#install(
+#  TARGETS control_cpp
+#  DESTINATION lib/${PROJECT_NAME}
+#)
+
+# Install Python modules
+ament_python_install_package(nodebot_control)
+
+# Install Python executables as scripts
+install(PROGRAMS
+  scripts/app scripts/two_joystick_test
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ament_package()
