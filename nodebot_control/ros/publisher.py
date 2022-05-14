@@ -24,9 +24,9 @@ class DataPublisher(Node):
         msg = Twist()
         #dict = self.data.dict.copy()
         # do transformation into robot x,y,z - axis
-        msg.linear.x =   0.25 * self.data.dict['rightStick']['y']
-        msg.linear.y =  -0.25 * self.data.dict['rightStick']['x']
-        msg.linear.z =   0.25 * self.data.dict['rightStick']['z']
+        msg.linear.x =   0.05 * self.data.dict['rightStick']['y']
+        msg.linear.y =  -0.05 * self.data.dict['rightStick']['x']
+        msg.linear.z =   0.05 * self.data.dict['rightStick']['z']
         msg.angular.x =  0.25 * self.data.dict['leftStick']['x']
         msg.angular.y =  0.25 * self.data.dict['leftStick']['y']
         msg.angular.z = -0.25 * self.data.dict['leftStick']['z']
