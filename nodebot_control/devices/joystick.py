@@ -41,8 +41,8 @@ class Joystick:
         self.signals = JoystickSignals()
         self.values = [0]*4
         self.center = [828]*4
-        self.lower_deadzone= [800]*4
-        self.upper_deadzone = [856]*4
+        self.lower_deadzone= [775]*4
+        self.upper_deadzone = [875]*4
         self.min_change = 1
 
         # Use ADC.ADS1115 for the 16 bit version
@@ -77,5 +77,5 @@ class Joystick:
             self.signals.data.emit((self.id, (self.values[0]/828)-1.0, (self.values[1]/828)-1.0, (self.values[2]/828)-1.0, (self.values[3]/828)-1.0))
 
     def create_value_set_definition(self):
-        return {'x':self.center[0], 'y':self.center[1], 'z':self.center[2], 'b':self.center[3]}
+        return {'x':0.0, 'y':0.0, 'z':0.0, 'b':0.0}
 
