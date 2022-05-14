@@ -41,8 +41,8 @@ class Joystick:
         self.signals = JoystickSignals()
         self.values = [0]*4
         self.center = [828]*4
-        self.lower_deadzone= [828]*4
-        self.upper_deadzone = [828]*4
+        self.lower_deadzone= [800]*4
+        self.upper_deadzone = [856]*4
         self.min_change = 1
 
         # Use ADC.ADS1115 for the 16 bit version
