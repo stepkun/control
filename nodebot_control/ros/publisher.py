@@ -14,7 +14,7 @@ class DataPublisher(Node):
     def __init__(self, data_store):
         super().__init__('data_publisher')
         self.data = data_store
-        self.publisher_ = self.create_publisher(Twist, '/nodebot1/cmd_vel', 10)
+        self.publisher_ = self.create_publisher(Twist, '/nodebot1/chassis/cmd_vel', 10)
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
@@ -22,13 +22,14 @@ class DataPublisher(Node):
     def timer_callback(self):
         #print(self.data)
         msg = Twist()
-        dict = self.data.dict.copy()
-        msg.linear.x = 1.0 * dict['leftStick']['x']
-        msg.linear.y = 1.0 * dict['leftStick']['y']
-        msg.linear.z = 1.0 * dict['leftStick']['z']
-        msg.angular.x = 1.0 * dict['rightStick']['x']
-        msg.angular.y = 1.0 * dict['rightStick']['y']
-        msg.angular.z = 1.0 * dict['rightStick']['z']
+        #dict = self.data.dict.copy()
+        # do transformation into robot x,y,z - axis
+        msg.linear.x =   0.25 * self.data.dict['rightStick']['y']
+        msg.linear.y =  -0.25 * self.data.dict['rightStick']['x']
+        msg.linear.z =   0.25 * self.data.dict['rightStick']['z']
+        msg.angular.x =  0.25 * self.data.dict['leftStick']['x']
+        msg.angular.y =  0.25 * self.data.dict['leftStick']['y']
+        msg.angular.z = -0.25 * self.data.dict['leftStick']['z']
         self.publisher_.publish(msg)
         #self.get_logger().info('Publishing: "%s"' % msg.data)
         self.i += 1
