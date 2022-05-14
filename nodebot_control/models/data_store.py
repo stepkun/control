@@ -8,6 +8,9 @@ class DataStore:
         return self.dict.__str__()
 
     def receive_data(self, data):
-        (id, content) = data
-        self.dict[id] = content.copy()
+        (id, x, y, z, b) = data
+        self.dict[id]['x'] = x
+        self.dict[id]['y'] = y
+        self.dict[id]['z'] = z
+        self.dict[id]['b'] = b
 

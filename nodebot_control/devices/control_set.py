@@ -47,7 +47,7 @@ class ControlSet:
 
     def add(self, control):
         self.controls[control.id] = control
-        self.data.dict[control.id] = control.get_value_set()
+        self.data.dict[control.id] = control.create_value_set_definition()
         control.signals.data.connect(self.data.receive_data)
 
 
