@@ -74,7 +74,7 @@ class Joystick:
                 values_changed = True
         if values_changed == True:
             #print('I2C: 0x{0:02x}'.format(self.id), '| {0:>6} | {1:>6} | {2:>6} | {3:>6} |'.format(*self.values))
-            self.signals.data.emit((self.id, self.values[0], self.values[1], self.values[2], self.values[3]))
+            self.signals.data.emit((self.id, (self.values[0]/828)-1.0, (self.values[1]/828)-1.0, (self.values[2]/828)-1.0, (self.values[3]/828)-1.0))
 
     def create_value_set_definition(self):
         return {'x':self.center[0], 'y':self.center[1], 'z':self.center[2], 'b':self.center[3]}
