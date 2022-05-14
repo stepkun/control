@@ -14,7 +14,7 @@ class DataPublisher(Node):
     def __init__(self, data_store):
         super().__init__('data_publisher')
         self.data = data_store
-        self.publisher_ = self.create_publisher(Twist, '/nodebot1/chassis/cmd_vel', 10)
+        self.publisher_ = self.create_publisher(Twist, '/nodebot1/cmd_vel', 10)
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
