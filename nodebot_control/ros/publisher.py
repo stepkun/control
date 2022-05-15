@@ -21,21 +21,22 @@ class DataPublisher(Node):
 
     def timer_callback(self):
         #print(self.data)
-        msg = Twist()
+        msg_vel = Twist()
         #dict = self.data.dict.copy()
         # publish cmd_vel from right stick
         # do transformation into robot x,y,z - axis
-        msg.linear.x =   0.05 * self.data.dict['rightStick']['y']
-        msg.angular.z = -0.25 * self.data.dict['rightStick']['z']
+        msg_vel.linear.x =   0.05 * self.data.dict['rightStick']['y']
+        msg_vel.angular.z = -0.25 * self.data.dict['rightStick']['z']
         #self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.cmd_vel_publisher.publish(msg)
+        self.cmd_vel_publisher.publish(msg_vel)
 
+        msg_cam = Twist()
         # publish cmd_cam from left stick
         # do transformation into robot x,y,z - axis
-        msg.angular.y = 90 + 40 * self.data.dict['leftStick']['y']
-        msg.angular.z = 90 - 70 * self.data.dict['leftStick']['z']
+        msg_cam.angular.y = 90 + 40 * self.data.dict['leftStick']['y']
+        msg_cam.angular.z = 90 - 70 * self.data.dict['leftStick']['z']
         #self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.cmd_vel_publisher.publish(msg)
+        self.cmd_cam_publisher.publish(msg_cam)
 
 class RosPublisherWorker(QRunnable):
     '''
