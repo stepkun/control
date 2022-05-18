@@ -61,7 +61,7 @@ class Joystick:
         else:
             for i in range(4):
                 time.sleep(0.1)     # for simulation of read-time to allow other threads to run
-                new_values[i] = random.randfloat(-1.0, +1.0)
+                new_values[i] = random.randint(0, 1656)
 
         #print('I2C: 0x{0:02x}'.format(self.addr), '| {0:>6} | {1:>6} | {2:>6} | {3:>6} |'.format(*new_values))
         # only emit if values changed with respect to min_change
