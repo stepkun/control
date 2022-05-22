@@ -45,7 +45,7 @@ class DataPublisher(Node):
         half_roll  = self.data.dict['leftStick']['x'] * self.scale[0] / 2
         half_pitch = self.data.dict['leftStick']['y'] * self.scale[1] / 2
         half_yaw   = self.data.dict['leftStick']['z'] * self.scale[2] / 2
-        print(2 * half_roll, 2 * half_pitch, 2 * half_yaw)
+        #print(2 * half_roll, 2 * half_pitch, 2 * half_yaw)
 
         cy = math.cos(half_yaw)
         sy = math.sin(half_yaw)
