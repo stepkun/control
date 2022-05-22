@@ -1,4 +1,4 @@
 # nodebot_control
 
-## reconditions
+## preconditions
 Install adafruit ADC driver with 'pip install Adafruit-ADS1x15'
