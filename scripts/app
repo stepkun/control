@@ -18,8 +18,8 @@ def main(args=None):
 
         # setup application components, running in a separate thread
         controls = ControlSet(data)
-        controls.add(Joystick('leftStick', 0x48))
-        controls.add(Joystick('rightStick', 0x49))
+        controls.add(Joystick('leftStick', address = 0x48, xy_inverted = True))
+        controls.add(Joystick('rightStick', address = 0x49, xy_inverted = True))
 
         # setup ros publisher running in a separate thread
         publisher = RosPublisher(data)

@@ -34,16 +34,22 @@ class JoystickSignals(QObject):
 
     data  = Signal(tuple)
 
+
+
 class Joystick:
-    def __init__(self, id, address = 0x48): # 0x48 is default address for adc1x15
+    def __init__(self, id, address = 0x48, xy_inverted = False): # 0x48 is default address for adc1x15
         self.id = id
         self.addr = address
         self.signals = JoystickSignals()
         self.values = [0]*4
         self.center = [828]*4
-        self.lower_deadzone= [800]*4
+        self.lower_deadzone = [800]*4
         self.upper_deadzone = [856]*4
+        self.direction = [1]*4
         self.min_change = 1
+        if xy_inverted:
+            self.direction[0] = -1
+            self.direction[1] = -1
 
         # Use ADC.ADS1115 for the 16 bit version
         if no_adc == False:
@@ -70,7 +76,13 @@ class Joystick:
                 self.values[i] = new_values[i]
                 values_changed = True
         if values_changed == True:
-            self.signals.data.emit((self.id, (self.values[0]/828)-1.0, (self.values[1]/828)-1.0, (self.values[2]/828)-1.0, (self.values[3]/828)-1.0))
+            self.signals.data.emit((
+                self.id,
+                self.direction[0]*((self.values[0]/828)-1.0), 
+                self.direction[1]*((self.values[1]/828)-1.0),
+                self.direction[2]*((self.values[2]/828)-1.0),
+                self.direction[3]*((self.values[3]/828)-1.0)
+            ))
 
     def create_value_set_definition(self):
         return {'x':0.0, 'y':0.0, 'z':0.0, 'b':0.0}
