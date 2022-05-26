@@ -7,7 +7,7 @@
   <maintainer email="stephan.kunz@kabelbw.de">stepkun</maintainer>
   <license>NGMC-License</license>
 
-  <buildtool_depend>ament</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>
