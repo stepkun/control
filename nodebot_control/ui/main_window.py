@@ -8,11 +8,11 @@ from .actions.exit_action import ExitAction
 from .actions.dummy_action import DummyAction
 
 class MainWindow(QMainWindow):
-    def __init__(self, controls, publisher):
+    def __init__(self, controls, ros_executor):
         super().__init__()
 
         self.worker1 = controls
-        self.worker2 = publisher
+        self.worker2 = ros_executor
 
         self.setWindowTitle("NodebotControl")
         self.setFixedSize(QSize(800, 480))
@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         # add actions
         for i in range(0, 5):
             toolbar.addAction(DummyAction(self))  # dummy!!!
-        toolbar.addAction(ExitAction(self, controls, publisher))
+        toolbar.addAction(ExitAction(self, controls, ros_executor))
 
         # right toolbar
         toolbar = ToolBar("RightActions", self)

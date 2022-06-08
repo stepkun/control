@@ -1,13 +1,13 @@
-
 from cmath import pi
 import math
 
 import rclpy
-from rclpy.node import Node
+from rclpy.lifecycle import Node
+from rclpy.lifecycle import Publisher
+from rclpy.lifecycle import State
+from rclpy.lifecycle import TransitionCallbackReturn
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Quaternion
-
-from PySide2.QtCore import QThreadPool, QRunnable, Slot
 
 
 class DataPublisher(Node):
@@ -18,14 +18,56 @@ class DataPublisher(Node):
     '''
     def __init__(self, data_store):
         super().__init__('data_publisher')
-        self.topic_vel = '/nodebot1/cmd_vel'
-        self.topic_cam = '/nodebot1/cmd_cam'
         self.scale = [math.pi/2] * 3
         self.data = data_store
-        self.cmd_vel_publisher = self.create_publisher(Twist, self.topic_vel, 10)  # command for robot speed
-        self.cmd_cam_publisher = self.create_publisher(Quaternion, self.topic_cam, 10)  # command for camera orientation
+
+    def on_configure(self, state: State) -> TransitionCallbackReturn:
+        self.get_logger().info("on_activate() is called.")
+
+        # command for robot speed
+        self.topic_vel = '/nodebot1/cmd_vel'
+        self.cmd_vel_publisher = self.create_publisher(Twist, self.topic_vel, 10)
+        # command for camera orientation
+        self.topic_cam = '/nodebot1/cmd_cam'
+        self.cmd_cam_publisher = self.create_publisher(Quaternion, self.topic_cam, 10)
+
+        # subscribe
+
+        return TransitionCallbackReturn.SUCCESS
+
+    def on_activate(self, state: State) -> TransitionCallbackReturn:
+        self.get_logger().info("on_activate() is called.")
+
+        # start publishing
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
+
+        return super().on_activate(state)
+
+    def on_deactivate(self, state: State) -> TransitionCallbackReturn:
+        self.get_logger().info("on_deactivate() is called.")
+
+        # stop publishing
+
+        return super().on_deactivate(state)
+
+    def on_cleanup(self, state: State) -> TransitionCallbackReturn:
+        self.get_logger().info('on_cleanup() is called.')
+
+        # remove publisher and subscriber
+
+        return TransitionCallbackReturn.SUCCESS
+
+    def on_shutdown(self, state: State) -> TransitionCallbackReturn:
+        self.get_logger().info('on_shutdown() is called.')
+
+        # if not already done remove publisher and subscriber
+
+        return TransitionCallbackReturn.SUCCESS
+
+    def on_error(self, state: State) -> TransitionCallbackReturn:
+        self.get_logger().info("on_error() is called.")
+        return TransitionCallbackReturn.SUCCESS
 
     def timer_callback(self):
         #print(self.data)
@@ -61,49 +103,4 @@ class DataPublisher(Node):
         self.get_logger().debug('Publishing ' + self.topic_cam + ': "%s"' % msg_cam)
         self.cmd_cam_publisher.publish(msg_cam)
 
-class RosPublisherWorker(QRunnable):
-    '''
-    Worker thread handling ros publishing
-    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
 
-    '''
-    def __init__(self, data_store):
-        super(RosPublisherWorker, self).__init__()
-        self.data = data_store
-
-        self.do_run = True
-
-
-    @Slot()  # QtCore.Slot
-    def run(self):
-        #print("publisher started")
-        rclpy.init(args=None)
-
-        publisher = DataPublisher(self.data)
- 
-        while self.do_run:
-            rclpy.spin_once(publisher)
-
-        #print("publisher ended")
-
-        # Destroy the node explicitly
-        # (optional - otherwise it will be done automatically
-        # when the garbage collector destroys the node object)
-        publisher.destroy_node()
-        rclpy.shutdown()
- 
-
-    def stop(self):
-        self.do_run = False
-
-
-
-class RosPublisher:
-    def __init__(self, data_store):
-        self.threadpool = QThreadPool()
-        self.publisher = RosPublisherWorker(data_store)
-        self.threadpool.start(self.publisher)
-
-
-    def stop(self):
-        self.publisher.stop()

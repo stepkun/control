@@ -6,7 +6,7 @@ from nodebot_control.ui.main_window import MainWindow
 from nodebot_control.models.data_store import DataStore
 from nodebot_control.devices.control_set import ControlSet
 from nodebot_control.devices.joystick import Joystick
-from nodebot_control.ros.publisher import RosPublisher
+from nodebot_control.ros.executor import RosExecutor
 
 def main(args=None):
     try:
@@ -21,11 +21,11 @@ def main(args=None):
         controls.add(Joystick('leftStick', address = 0x48, xy_inverted = True))
         controls.add(Joystick('rightStick', address = 0x49, xy_inverted = True))
 
-        # setup ros publisher running in a separate thread
-        publisher = RosPublisher(data)
+        # setup ros executor running in a separate thread
+        ros_executor = RosExecutor(data)
 
         #setup main window
-        window = MainWindow(controls, publisher)
+        window = MainWindow(controls, ros_executor)
         window.show()
 
         # run application event loop
@@ -39,7 +39,7 @@ def main(args=None):
         except:
             pass
         try:
-            publisher.stop()
+            ros_executor.stop()
         except:
             pass
         exit()
