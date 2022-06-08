@@ -9,18 +9,19 @@ from PySide2.QtCore import QThreadPool, QRunnable, Slot
 from .data_publisher import DataPublisher
 
 
-class RosPublisherWorker(QRunnable):
+class RosExecutor(QRunnable):
     '''
-    Worker thread handling ros publishing
-    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
+    Worker thread handling ros executor
+    Inherits from QRunnable to handle worker thread setup, signals and wrap-up.
 
     '''
     def __init__(self, data_store):
-        super(RosPublisherWorker, self).__init__()
+        super(RosExecutor, self).__init__()
         self.data = data_store
-
         self.do_run = True
 
+        self.threadpool = QThreadPool()
+        self.threadpool.start(self)
 
     @Slot()  # QtCore.Slot
     def run(self):
@@ -39,19 +40,6 @@ class RosPublisherWorker(QRunnable):
         # when the garbage collector destroys the node object)
         publisher.destroy_node()
         rclpy.shutdown()
- 
 
     def stop(self):
         self.do_run = False
-
-
-
-class RosExecutor:
-    def __init__(self, data_store):
-        self.threadpool = QThreadPool()
-        self.publisher = RosPublisherWorker(data_store)
-        self.threadpool.start(self.publisher)
-
-
-    def stop(self):
-        self.publisher.stop()
