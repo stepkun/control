@@ -4,6 +4,8 @@ from PySide2.QtGui import QPalette, QColor
 from PySide2.QtWidgets import QMainWindow, QWidget
 
 from .toolbar import ToolBar
+from .actions.configure_action import ConfigureAction
+from .actions.activate_action import ActivateAction
 from .actions.exit_action import ExitAction
 from .actions.dummy_action import DummyAction
 
@@ -23,8 +25,10 @@ class MainWindow(QMainWindow):
         toolbar = ToolBar("LeftActions", self)
         self.addToolBar(Qt.LeftToolBarArea, toolbar)
         # add actions
-        for i in range(0, 5):
+        for i in range(0, 3):
             toolbar.addAction(DummyAction(self))  # dummy!!!
+        toolbar.addAction(ConfigureAction(self, controls, ros_executor))
+        toolbar.addAction(ActivateAction(self, controls, ros_executor))
         toolbar.addAction(ExitAction(self, controls, ros_executor))
 
         # right toolbar
